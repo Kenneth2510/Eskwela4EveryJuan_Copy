@@ -20,60 +20,16 @@ $(document).ready(function() {
                     console.log(response);
 
                     var learner = response['learner']
-                    var session_id = learner['learner_id']
+                    // init_chatbot(learner);
+                    
+
+                    $.when(
+                        add_learner_data(learner)
+                    ).then(function() {
+                        getCourseData(learner)
+                    })
 
 
-                    // $.when (
-                    //     init_chatbot(session_id),
-                    //     add_learner_data(session_id)
-                    // ).then (function() {
-                        process_files(session_id)
-
-                        $('.submitQuestion').on('click', function(e) {
-                            e.preventDefault();
-                            submitQuestion();
-                        });
-            
-                        $('.question_input').on('keydown', function(e) {
-                            if (e.keyCode === 13) {
-                                e.preventDefault();
-                                submitQuestion();
-                            }
-                        });
-            
-                        function submitQuestion() {
-                            var learner_id = learner['learner_id'];
-                            var question = $('.question_input').val();
-                            var course = 'ALL';
-                            var lesson = 'ALL';
-            
-                            displayUserMessage(question, learner);
-                            $('.botloader').removeClass('hidden');
-                            var chatData = {
-                                question: question,
-                                course: course,
-                                lesson: lesson,
-                            };
-            
-                            var url = `/chatbot/chat/${learner_id}`;
-                            $.ajax({
-                                type: "POST",
-                                url: url,
-                                data: chatData,
-                                headers: {
-                                    'X-CSRF-TOKEN': csrfToken
-                                },
-                                success: function(response) {
-                                    console.log(response);
-                                    displayBotMessage(response);
-                                    $('.question_input').val('')
-                                },
-                                error: function(error) {
-                                    console.log(error);
-                                }
-                            });
-                        }
-                    // })
 
                 },
                 error: function(error) {
@@ -82,26 +38,109 @@ $(document).ready(function() {
             });
     }
 
-
-
-    function process_files(session_id) {
-        var url = `/chatbot/process/${session_id}`;
+    
+    function add_learner_data(learner) {
+        
+        var learner_id = learner['learner_id'];
+        var url = `/chatbot/learner/${learner_id}`;
         $.ajax({
             type: "GET",
             url: url,
             success: function(response) {
                 console.log(response);
+                 },
+                 error: function(error) {
+                     console.log(error);
+                 }
+             });
+}
 
-                $('.loaderArea').addClass('hidden');
-                $('.mainchatbotarea').removeClass('hidden');
+function process_files(session_id) {
+    var url = `/chatbot/process/${session_id}`;
+    $.ajax({
+        type: "GET",
+        url: url,
+        success: function(response) {
+            console.log(response);
+
+            $('.loaderArea').addClass('hidden');
+            $('.mainchatbotarea').removeClass('hidden');
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+}
+
+    function getCourseData(learner) {
+        var course_id = $('#gradesheetTitle').data('course-id');
+        var url = `/chatbot/courseData/${course_id}`;
+        $.ajax({
+            type: "GET",
+            url: url,
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
+            success: function(response) {
+                console.log(response);
+    
+                
+                var learner_id = learner['learner_id'];
+                process_files(learner_id)
+
+
+                var courseData = response['course'];
+    
+                $('.submitQuestion').on('click', function(e) {
+                    e.preventDefault();
+                    submitQuestion();
+                });
+    
+                $('.question_input').on('keydown', function(e) {
+                    if (e.keyCode === 13) {
+                        e.preventDefault();
+                        submitQuestion();
+                    }
+                });
+    
+                function submitQuestion() {
+                    var learner_id = learner['learner_id'];
+                    var question = $('.question_input').val();
+                    var course = courseData['course_name'];
+                    var lesson = 'GRADESHEET';
+    
+                    displayUserMessage(question, learner);
+                    $('.botloader').removeClass('hidden');
+                    var chatData = {
+                        question: question,
+                        course: course,
+                        lesson: lesson,
+                    };
+    
+                    var url = `/chatbot/chat/${learner_id}`;
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: chatData,
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        success: function(response) {
+                            console.log(response);
+                            displayBotMessage(response);
+                            $('.question_input').val('')
+                        },
+                        error: function(error) {
+                            console.log(error);
+                        }
+                    });
+                }
             },
             error: function(error) {
                 console.log(error);
             }
         });
     }
-
-
     
 
     function displayUserMessage(question, learner) {
@@ -141,6 +180,7 @@ $(document).ready(function() {
 
         var message = response['message']
 
+        message = message.replace(/\n/g, '<br>');
         var botMessageDisp = ``
         botMessageDisp += `
         

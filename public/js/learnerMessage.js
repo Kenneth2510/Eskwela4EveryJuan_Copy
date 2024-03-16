@@ -990,6 +990,7 @@ $(document).ready(function() {
 
         var message = response['message']
 
+        message = message.replace(/\n/g, '<br>');
         var botMessageDisp = ``
         botMessageDisp += `
         

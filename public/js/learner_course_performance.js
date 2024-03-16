@@ -796,6 +796,7 @@ function process_files(session_id) {
 
         var message = response['message']
 
+        message = message.replace(/\n/g, '<br>');
         var botMessageDisp = ``
         botMessageDisp += `
         

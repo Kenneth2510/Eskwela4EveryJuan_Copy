@@ -6,8 +6,6 @@ $(document).ready(function() {
     var baseUrl = window.location.href;
     var durationVal;
 
-    var parts = baseUrl.split("/content/");
-    var main_course_id = parts[1].split("/")[0];
 
     var csrfToken = $('meta[name="csrf-token"]').attr('content');
     
@@ -423,7 +421,9 @@ function process_files(session_id) {
 }
 
     function getCourseData(learner) {
-        var url = `/chatbot/courseData/${main_course_id}`;
+        
+        var course_id = $('#titleArea').data('course-id');
+        var url = `/chatbot/courseData/${course_id}`;
         $.ajax({
             type: "GET",
             url: url,
@@ -529,6 +529,7 @@ function process_files(session_id) {
 
         var message = response['message']
 
+        message = message.replace(/\n/g, '<br>');
         var botMessageDisp = ``
         botMessageDisp += `
         

@@ -369,10 +369,14 @@ getLearnerAssessmentData();
 
                     var learner = response['learner']
                     // init_chatbot(learner);
-                    getCourseData(learner)
+                    
 
-                    $('.loaderArea').addClass('hidden');
-                    $('.mainchatbotarea').removeClass('hidden');
+                    $.when(
+                        add_learner_data(learner)
+                    ).then(function() {
+                        getCourseData(learner)
+                    })
+
 
 
                 },
@@ -382,7 +386,42 @@ getLearnerAssessmentData();
             });
     }
 
+    
+    function add_learner_data(learner) {
+        
+        var learner_id = learner['learner_id'];
+        var url = `/chatbot/learner/${learner_id}`;
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function(response) {
+                console.log(response);
+                 },
+                 error: function(error) {
+                     console.log(error);
+                 }
+             });
+}
+
+function process_files(session_id) {
+    var url = `/chatbot/process/${session_id}`;
+    $.ajax({
+        type: "GET",
+        url: url,
+        success: function(response) {
+            console.log(response);
+
+            $('.loaderArea').addClass('hidden');
+            $('.mainchatbotarea').removeClass('hidden');
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+}
+
     function getCourseData(learner) {
+        
         var course_id = $('#titleArea').data('course-id');
         var url = `/chatbot/courseData/${course_id}`;
         $.ajax({
@@ -394,6 +433,11 @@ getLearnerAssessmentData();
             success: function(response) {
                 console.log(response);
     
+                
+                var learner_id = learner['learner_id'];
+                process_files(learner_id)
+
+
                 var courseData = response['course'];
     
                 $('.submitQuestion').on('click', function(e) {
@@ -401,7 +445,7 @@ getLearnerAssessmentData();
                     submitQuestion();
                 });
     
-                $('.question').on('keydown', function(e) {
+                $('.question_input').on('keydown', function(e) {
                     if (e.keyCode === 13) {
                         e.preventDefault();
                         submitQuestion();
@@ -410,7 +454,7 @@ getLearnerAssessmentData();
     
                 function submitQuestion() {
                     var learner_id = learner['learner_id'];
-                    var question = $('.question').val();
+                    var question = $('.question_input').val();
                     var course = courseData['course_name'];
                     var lesson = 'POST ASSESSMENT';
     
@@ -433,7 +477,7 @@ getLearnerAssessmentData();
                         success: function(response) {
                             console.log(response);
                             displayBotMessage(response);
-                            $('.question').val('')
+                            $('.question_input').val('')
                         },
                         error: function(error) {
                             console.log(error);
@@ -485,13 +529,14 @@ getLearnerAssessmentData();
 
         var message = response['message']
 
+        message = message.replace(/\n/g, '<br>');
         var botMessageDisp = ``
         botMessageDisp += `
         
         <div class="chat chat-start">
             <div class="chat-image avatar">
                 <div class="w-10 rounded-full">
-                <img class="bg-white" alt="" src="/storage/app/public/images/chatbot.png" />
+                <img class="bg-white" alt="" src="../../storage/images/chatbot.png" />
                 </div>
             </div>
             <div class="chat-bubble ">${message}</div>
@@ -501,6 +546,5 @@ getLearnerAssessmentData();
         $('.botloader').addClass('hidden')
         $('.chatContainer').append(botMessageDisp);
     }
-
 
 })

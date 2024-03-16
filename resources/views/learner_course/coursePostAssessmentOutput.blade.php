@@ -26,7 +26,7 @@
             <div class="flex flex-col justify-between py-4 border-b-2 lg:flex-row">
                 <div class="flex flex-row items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="currentColor" d="M12 29a1 1 0 0 1-.92-.62L6.33 17H2v-2h5a1 1 0 0 1 .92.62L12 25.28l8.06-21.63A1 1 0 0 1 21 3a1 1 0 0 1 .93.68L25.72 15H30v2h-5a1 1 0 0 1-.95-.68L21 7l-8.06 21.35A1 1 0 0 1 12 29Z"/></svg>
-                    <h1 class="mx-2 text-2xl font-semibold">Post Assessment</h1>
+                    <h1 class="mx-2 text-2xl font-semibold" id="titleArea" data-course-id="{{$learnerCourseData->course_id}}">Post Assessment</h1>
                 </div>
                 <h1 class="mx-2 text-xl font-semibold">
                     @if ($postAssessmentData->status === "NOT YET STARTED")
