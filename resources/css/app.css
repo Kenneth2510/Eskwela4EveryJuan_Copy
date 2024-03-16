@@ -1,0 +1,61 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@layer components {
+    .IND-BTN {
+        @apply h-10 py-2 mx-10 my-2 font-medium text-center rounded md:w-52 md:rounded-xl lg:h-20;
+    }
+
+    .IND-BTN-L {
+        @apply text-white bg-green-700 md:mr-0 hover:bg-green-900;
+    }
+
+    .IND-BTN-IN {
+        @apply bg-white md:bg-transparent lg:w-60 hover:text-gray-100;
+    }
+
+    .IN-V-INP {
+        @apply w-full h-8 px-2 font-normal text-black rounded lg:h-10;
+    }
+
+    .FORM-CTNR {
+        @apply flex flex-col my-2 font-medium;
+    }
+
+    .AD-INP {
+        @apply w-full px-2 py-4 text-black rounded-lg shadow-sm lg:w-[350px];
+    }
+
+    .main-container {
+        @apply flex flex-row w-full h-auto text-sm bg-mainwhitebg md:text-base lg:h-screen;
+    }
+
+    /* Chrome, Edge, and Safari */
+    *::-webkit-scrollbar {
+        width: 15px;
+    }
+
+    *::-webkit-scrollbar-track {
+        background: #ffffff;
+    }
+
+    *::-webkit-scrollbar-thumb {
+        background-color: #1f8247;
+        border-radius: 50px;
+        border: 3px solid #ffffff;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    .fade-in {
+        animation: fadeIn .5s ease-in-out;
+    }
+}
