@@ -646,6 +646,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
 Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('/chatbot/init/{id}', 'ChatBotController@index');
     Route::get('/chatbot/learner/{id}', 'ChatBotController@learner');
+    Route::get('/chatbot/learner/{id}/course/{course}', 'ChatBotController@learner_course');
     Route::get('/chatbot/process/{id}', 'ChatBotController@process');
     Route::post('/chatbot/chat/{id}', 'ChatBotController@chat');
     Route::get('/chatbot/reset/{id}', 'ChatBotController@reset');

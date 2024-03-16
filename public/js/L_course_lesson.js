@@ -94,8 +94,9 @@ $(document).ready(function() {
 
     function add_learner_data(learner) {
         
+        var course_id = $('#lesson_title').data('course-id');
         var learner_id = learner['learner_id'];
-        var url = `/chatbot/learner/${learner_id}`;
+        var url = `/chatbot/learner/${learner_id}/course/${course_id}`;
         $.ajax({
             type: "GET",
             url: url,

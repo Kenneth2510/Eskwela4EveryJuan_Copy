@@ -146,6 +146,82 @@ class ChatBotController extends Controller
     }
 
 
+    public function get_learner_course_pdf_files($directory){
+
+        $files = Storage::files($directory);
+    
+        $pdfFiles = collect($files)->filter(function ($file) {
+            return pathinfo($file, PATHINFO_EXTENSION) === 'pdf';
+        })->values()->all();
+    
+        $subDirectories = Storage::directories($directory);
+    
+        foreach ($subDirectories as $subDirectory) {
+            $pdfFiles = array_merge($pdfFiles, $this->get_pdf_files($subDirectory));
+        }
+        return $pdfFiles;
+    }
+
+
+    public function learner_course($session_id, $course_id) {
+
+        $learnerData = DB::table('learner')
+        ->select(
+            'learner_id',
+            'learner_fname',
+            'learner_lname',
+        )
+        ->where('learner_id', $session_id)
+        ->first();
+
+        $courseData = DB::table('course')
+            ->select(
+                'course_id',
+                'course_name',
+            )
+            ->where('course_id', $course_id)
+            ->first();
+
+
+
+        $filePath = "$learnerData->learner_lname $learnerData->learner_fname";
+        $folderName = Str::slug($filePath, '_');
+
+        $courseName = "{$courseData->course_name}";
+        $fileCourseName = Str::slug("{$courseName}", '_');
+
+
+        if(!$session_id) {
+            $learner= session('learner');
+            $session_id = $learner->learner_id;
+        }
+        $directory = "public/learners/$folderName/documents/$fileCourseName";
+        $files = $this->get_learner_course_pdf_files($directory);
+
+        $client = new Client();
+    
+        foreach ($files as $file) {
+            $filePath = Storage::path($file);
+            $fileName = pathinfo($file, PATHINFO_BASENAME);
+    
+            // Send the PDF file to the Flask application
+            $response = $client->request('POST', "https://chateskwela4everyjuan-217458b9d6d9.herokuapp.com/add_file/$session_id", [
+                'multipart' => [
+                    [
+                        'name'     => 'files',
+                        'contents' => fopen($filePath, 'r'),
+                        'filename' => $fileName,
+                    ],
+                ],
+            ]);
+    
+            // Output the response for debugging
+            echo $response->getBody();
+        }
+
+    }
+
+
     public function process($session_id) {
                 // Create a Guzzle HTTP client instance
                 $client = new Client();

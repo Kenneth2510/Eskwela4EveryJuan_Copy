@@ -878,10 +878,13 @@ $learnerPostAssessmentData = DB::table('learner_post_assessment_progress')
         $name = "{$learnerData->learner_lname} {$learnerData->learner_fname} {$courseData->course_name}";
         $filename = Str::slug("{$name}", '_') . '_learnerGradeSheet.pdf';
 
+        $courseName = "{$courseData->course_name}";
+        $fileCourseName = Str::slug("{$courseName}", '_');
+
         $folderName = "{$learnerData->learner_lname} {$learnerData->learner_fname}";
         $folderName = Str::slug($folderName, '_');
 
-        $folderPath = 'learners/' . $folderName . '/documents';
+        $folderPath = 'learners/' . $folderName . '/documents' . '/' .$fileCourseName;
         
         Storage::disk('public')->put($folderPath . '/' . $filename, $dompdf->output());
 
@@ -1012,10 +1015,13 @@ public function learnerActivityOutput($learner, $course, $learner_course, $sylla
         $name = "{$learnerData->learner_lname} {$learnerData->learner_fname} {$courseData->course_name} {$activityData->activity_title} attempt {$attempt}";
         $filename = Str::slug("{$name}", '_') . '_learnerActivityOutput.pdf';
 
+        $courseName = "{$courseData->course_name}";
+        $fileCourseName = Str::slug("{$courseName}", '_');
+
         $folderName = "{$learnerData->learner_lname} {$learnerData->learner_fname}";
         $folderName = Str::slug($folderName, '_');
 
-        $folderPath = 'learners/' . $folderName . '/documents';
+        $folderPath = 'learners/' . $folderName . '/documents' . '/' .$fileCourseName;
 
         Storage::disk('public')->put($folderPath . '/' . $filename, $output);
 
@@ -1186,10 +1192,13 @@ public function learnerQuizOutput($learner, $course, $learner_course, $syllabus,
         $name = "{$learnerData->learner_lname} {$learnerData->learner_fname} {$courseData->course_name} {$learnerSyllabusProgressData->quiz_title} attempt {$attempt}";
         $filename = Str::slug("{$name}", '_') . '_learnerQuizOutput.pdf';
 
+        $courseName = "{$courseData->course_name}";
+        $fileCourseName = Str::slug("{$courseName}", '_');
+
         $folderName = "{$learnerData->learner_lname} {$learnerData->learner_fname}";
         $folderName = Str::slug($folderName, '_');
 
-        $folderPath = 'learners/' . $folderName . '/documents';
+        $folderPath = 'learners/' . $folderName . '/documents' . '/' .$fileCourseName;
 
         Storage::disk('public')->put($folderPath . '/' . $filename, $output);
 
@@ -1319,10 +1328,13 @@ public function learnerPreAssessmentOutput($learner, $course, $learner_course) {
         $name = "{$learnerData->learner_lname} {$learnerData->learner_fname} {$courseData->course_name}";
         $filename = Str::slug("{$name}", '_') . '_learnerPreAssessment.pdf';
 
+        $courseName = "{$courseData->course_name}";
+        $fileCourseName = Str::slug("{$courseName}", '_');
+
         $folderName = "{$learnerData->learner_lname} {$learnerData->learner_fname}";
         $folderName = Str::slug($folderName, '_');
 
-        $folderPath = 'learners/' . $folderName . '/documents';
+        $folderPath = 'learners/' . $folderName . '/documents' . '/' .$fileCourseName;
 
         Storage::disk('public')->put($folderPath . '/' . $filename, $output);
 
@@ -1457,10 +1469,14 @@ $postAssessmentOutputData = DB::table('learner_post_assessment_output')
         $name = "{$learnerData->learner_lname} {$learnerData->learner_fname} {$courseData->course_name} attempt {$attempt}";
         $filename = Str::slug("{$name}", '_') . '_learnerPostAssessment.pdf';
 
+        $courseName = "{$courseData->course_name}";
+        $fileCourseName = Str::slug("{$courseName}", '_');
+
+
         $folderName = "{$learnerData->learner_lname} {$learnerData->learner_fname}";
         $folderName = Str::slug($folderName, '_');
 
-        $folderPath = 'learners/' . $folderName . '/documents';
+        $folderPath = 'learners/' . $folderName . '/documents' . '/' .$fileCourseName;
 
         Storage::disk('public')->put($folderPath . '/' . $filename, $output);
 

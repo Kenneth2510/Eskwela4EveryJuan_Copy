@@ -640,7 +640,7 @@ $(document).ready(function() {
                     
 
                     $.when(
-                        add_learner_data(learner)
+                        add_learner_data(learner, course)
                     ).then(function() {
                         getCourseData(learner, course)
                     })
@@ -658,7 +658,8 @@ $(document).ready(function() {
     function add_learner_data(learner) {
         
         var learner_id = learner['learner_id'];
-        var url = `/chatbot/learner/${learner_id}`;
+        var course_id = course['course_id'];
+        var url = `/chatbot/learner/${learner_id}/course/${course_id}`;
         $.ajax({
             type: "GET",
             url: url,
