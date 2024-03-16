@@ -19,10 +19,13 @@
                     <div class="flex flex-col my-2">
                         <label for="course_name" class="">Course Name</label>
                         <input class="p-2 font-semibold border-2 rounded-lg border-darthmouthgreen" id="course_name" name="course_name" type="text">
+                        
+                        <span id="courseNameError" class="text-red-500"></span>
                     </div>
                     <div class="flex flex-col my-2 mt-5">
                         <label for="course_description" class="">Description</label>
                         <textarea class="h-[200px] max-h-[200px] p-2 font-regular border-2 rounded-lg border-darthmouthgreen" name="course_description" id="course_description"></textarea>
+                        <span id="courseDescriptionError" class="text-red-500"></span>
                     </div>
                     <div class="flex flex-col my-2 mt-5">
                         <label for="course_difficulty" class="">Course Difficulty</label>
@@ -32,6 +35,8 @@
                             <option value="Intermediate">Intermediate</option>
                             <option value="Advanced">Advanced</option>
                         </select>
+                        
+                        <span id="courseDifficultyError" class="text-red-500"></span>
                     </div>
 
                     <div class="flex justify-end w-full">
@@ -96,9 +101,11 @@
                                 <p>upload your course module here, it will help in setting the learner chatbot</p>
                                 
                                 <div class="flex flex-col my-2">
-                                    <input id="courseFilesUpload" class="mt-5 font-semibold bg-white rounded-lg ring-2 ring-darthmouthgreen file:px-5 file:py-2 file:bg-darthmouthgreen file:text-white" type="file" name="file" id="fileInput" multiple>
+                                    <input required id="courseFilesUpload" class="mt-5 font-semibold bg-white rounded-lg ring-2 ring-darthmouthgreen file:px-5 file:py-2 file:bg-darthmouthgreen file:text-white" type="file" name="file" id="fileInput" multiple>
                                     <ul class="px-2 py-2" id="uploadedFileName">
                                     </ul>
+                                    
+                                    <span id="courseFilesError" class="text-red-500"></span>
                                 </div>
             
                                 

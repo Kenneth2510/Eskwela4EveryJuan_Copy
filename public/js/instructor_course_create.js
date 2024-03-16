@@ -67,12 +67,12 @@ $(document).ready(function () {
 
             var updatedLesson = {
                 id: row.find("td:nth-child(1)").text(),
-                lesson_name: row.find(".item_lessonName").val(),
+                title_name: row.find(".item_lessonName").val(),
                 category: row.find(".item_category").val(),
             };
 
             lessons[lessonIndex] = updatedLesson;
-            // You can save the updated lessons array here if needed.
+            console.log(lessons);
 
             row.find(".item_lessonName, .item_category").prop("disabled", true);
             row.find(".editButtons").addClass("hidden");
@@ -169,27 +169,24 @@ $(document).ready(function () {
 
         $("#add_newInputConfirm").on("click", function (e) {
             e.preventDefault();
-
-            var titleName = $("#add_title").val();
+        
+            var toAddTitleName = $("#add_title").val(); // Moved this line inside the click handler
             var toAdd_category = $("#add_categoryInput").val();
-
-            // console.log(toAdd_category);
-            if (titleName.trim() !== "" && toAdd_category !== null) {
+        
+            if (toAddTitleName.trim() !== "" && toAdd_category !== null) {
                 var newLesson = {
-                    title_name: titleName,
+                    title_name: toAddTitleName,
                     category: toAdd_category,
                 };
-
+        
                 lessons.push(newLesson);
-                // console.log(lessons);
-                titleName = "";
-                $("#add_title").val("");
+                console.log(lessons);
+                $("#add_title").val(""); // Clear the input field
                 $("#add_category").val("");
-
+        
                 $("#addLesson_start").removeClass("hidden");
                 $("#add_newInput").addClass("hidden");
-                $("#addLesson_start").removeClass("hidden");
-
+        
                 displayLessons();
             } else {
                 alert("Please enter a Title");
@@ -265,16 +262,49 @@ $(document).ready(function () {
         var course_description = $("#course_description").val();
         var course_difficulty = $("#course_difficulty").val();
 
-        if (
-            course_name === "" ||
-            course_description === "" ||
-            course_difficulty === ""
-        ) {
-            alert("Please fill all fields");
+        // if (
+        //     course_name === "" ||
+        //     course_description === "" ||
+        //     course_difficulty === ""
+        // ) {
+        //     alert("Please fill all fields");
 
-            // Handle field validation errors (similar to your existing code)
-            // ...
+        //     // Handle field validation errors (similar to your existing code)
+        //     // ...
+        // } else {
+        var isValid = true;
+
+        if (course_name === '') {
+            $('#courseNameError').text('Please enter a course name.');
+            isValid = false;
+            $("#secondCreateCourse").addClass("hidden");
+            $("#firstCreateCourse").removeClass("hidden");
+            $("#thirdCreateCourse").addClass("hidden");
         } else {
+            $('#courseNameError').text('');
+        }
+
+        if (course_description === '') {
+            $('#courseDescriptionError').text('Please enter a course description.');
+            isValid = false;
+            $("#secondCreateCourse").addClass("hidden");
+            $("#firstCreateCourse").removeClass("hidden");
+            $("#thirdCreateCourse").addClass("hidden");
+        } else {
+            $('#courseDescriptionError').text('');
+        }
+
+        if (course_difficulty === '') {
+            $('#courseDifficultyError').text('Please enter a course name.');
+            isValid = false;
+            $("#secondCreateCourse").addClass("hidden");
+            $("#firstCreateCourse").removeClass("hidden");
+            $("#thirdCreateCourse").addClass("hidden");
+        } else {
+            $('#courseDifficultyError').text('');
+        }
+
+        if(isValid) {
             var formData = new FormData(this);
         $('#loaderModal').removeClass('hidden');
             $.ajax({
@@ -311,6 +341,8 @@ $(document).ready(function () {
                 },
             });
         }
+
+        // }
     });
 
     function uploadFiles(courseId) {
